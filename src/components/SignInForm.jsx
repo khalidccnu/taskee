@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -7,10 +8,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { useTheme } from "@mui/material/styles";
-import { Google } from "@mui/icons-material";
+import { Google, Login } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { setUserLoading } from "../redux/auth/authSlice.js";
+import { signInWithEP, signInWithGoogle } from "../redux/auth/authThunks.js";
 
 const validationSchema = yup.object({
   email: yup
@@ -25,6 +31,11 @@ const validationSchema = yup.object({
 
 const SignInForm = ({ setSUMOpen }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const { isUserLoading } = useSelector((store) => store.authSlice);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fromURL = location.state?.fromURL.pathname;
 
   const formik = useFormik({
     initialValues: {
@@ -32,8 +43,40 @@ const SignInForm = ({ setSUMOpen }) => {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {},
+    onSubmit: (values) => {
+      dispatch(signInWithEP({ values })).then((response) => {
+        if (response?.error) {
+          dispatch(setUserLoading(false));
+
+          if (
+            response.error.message === "Firebase: Error (auth/wrong-password)."
+          ) {
+            toast.error("Incorrect password!");
+          } else if (
+            response.error.message === "Firebase: Error (auth/user-not-found)."
+          ) {
+            toast.error("User not found!");
+          }
+        } else {
+          navigate(fromURL || "dashboard");
+        }
+      });
+    },
   });
+
+  const handleSigninWithGoogle = () => {
+    dispatch(signInWithGoogle()).then((response) => {
+      if (response?.error) dispatch(setUserLoading(false));
+      else navigate(fromURL || "dashboard");
+    });
+  };
+
+  useEffect(() => {
+    if (fromURL)
+      toast.error(
+        "Only registered user can access this page. Please, sign in first!",
+      );
+  }, []);
 
   return (
     <Box bgcolor={`#fff`} maxWidth={`20rem`} mx={`auto`} p={5} borderRadius={3}>
@@ -75,7 +118,10 @@ const SignInForm = ({ setSUMOpen }) => {
           />
         </Grid>
         <Grid item>
-          <Button
+          <LoadingButton
+            loading={isUserLoading}
+            loadingPosition="start"
+            startIcon={<Login />}
             fullWidth
             type={`submit`}
             color={`rifleGreen`}
@@ -93,9 +139,13 @@ const SignInForm = ({ setSUMOpen }) => {
               },
             }}
           >
-            SignIn
-          </Button>
+            <Typography component={`span`} mt={0.5} fontSize={`inherit`}>
+              SignIn
+            </Typography>
+          </LoadingButton>
         </Grid>
+      </Grid>
+      <Grid container direction={`column`} rowSpacing={2} mt={1}>
         <Grid
           container
           item
@@ -136,6 +186,7 @@ const SignInForm = ({ setSUMOpen }) => {
                 boxShadow: `none`,
               },
             }}
+            onClick={handleSigninWithGoogle}
           >
             <Box
               display={`flex`}

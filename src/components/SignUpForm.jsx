@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Backdrop,
   Box,
   Button,
   Fade,
-  FormControl,
   FormHelperText,
   Grid,
-  InputLabel,
   Modal,
   styled,
   TextField,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { useTheme } from "@mui/material/styles";
-import { CloudUpload } from "@mui/icons-material";
+import { CloudUpload, PersonAdd } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { setUserLoading } from "../redux/auth/authSlice.js";
+import { createUserWithEP } from "../redux/auth/authThunks.js";
 
 const VisuallyHiddenInput = styled("input")`
   position: absolute;
@@ -55,6 +59,9 @@ const validationSchema = yup.object({
 
 const SignUpForm = ({ isSUMOpen, setSUMOpen }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const { isUserLoading } = useSelector((store) => store.authSlice);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -64,7 +71,25 @@ const SignUpForm = ({ isSUMOpen, setSUMOpen }) => {
       userImg: null,
     },
     validationSchema,
-    onSubmit: (values) => {},
+    onSubmit: (values) => {
+      dispatch(createUserWithEP({ values })).then((response) => {
+        if (response?.error) {
+          dispatch(setUserLoading(false));
+
+          if (
+            response.error.message ===
+            "Firebase: Error (auth/email-already-in-use)."
+          ) {
+            toast.error("Email already in use!");
+          }
+        } else {
+          toast.success(
+            "Your account has been created successfully! You are being redirected, please wait...",
+          );
+          setTimeout(() => navigate("dashboard"), 3000);
+        }
+      });
+    },
   });
 
   return (
@@ -220,7 +245,10 @@ const SignUpForm = ({ isSUMOpen, setSUMOpen }) => {
                 </Grid>
               </Grid>
               <Grid item>
-                <Button
+                <LoadingButton
+                  loading={isUserLoading}
+                  loadingPosition="start"
+                  startIcon={<PersonAdd />}
                   fullWidth
                   type={`submit`}
                   color={`rifleGreen`}
@@ -239,7 +267,7 @@ const SignUpForm = ({ isSUMOpen, setSUMOpen }) => {
                   }}
                 >
                   SignUp
-                </Button>
+                </LoadingButton>
               </Grid>
             </Grid>
           </Box>
