@@ -2,8 +2,15 @@ import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   palette: {
-    axolotl: "#62775C",
-    rifleGreen: "#40513B",
+    axolotl: {
+      main: "#62775C",
+    },
+    rifleGreen: {
+      main: "#40513B",
+    },
+  },
+  typography: {
+    fontFamily: "'Josefin Sans Variable', sans-serif",
   },
 });
 
