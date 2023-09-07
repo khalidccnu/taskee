@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Box, Container, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { MenuOpen } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { IKImage } from "imagekitio-react";
 
 const Dashboard = () => {
   const theme = useTheme();
-  const [isHBMenu, setHbMenu] = useState(true);
+  const { isHBMenu, setHbMenu } = useOutletContext();
   const { user } = useSelector((store) => store.authSlice);
 
   const handleResize = (_) => {
@@ -45,6 +47,27 @@ const Dashboard = () => {
           <Box
             height={{ xs: `100%`, md: `calc(100vh - ${theme.spacing(10)})` }}
           >
+            <Box textAlign={`end`} display={{ sm: `none` }}>
+              <Button
+                type={`button`}
+                color={`rifleGreen`}
+                variant={`contained`}
+                size={`small`}
+                sx={{
+                  color: `#fff`,
+                  border: `1px solid transparent`,
+                  boxShadow: `none`,
+                  "&:hover": {
+                    backgroundColor: `transparent`,
+                    borderColor: `#fff`,
+                    boxShadow: `none`,
+                  },
+                }}
+                onClick={() => setHbMenu(!isHBMenu)}
+              >
+                <MenuOpen fontSize={`small`} />
+              </Button>
+            </Box>
             <Box>
               <Box
                 component={`figure`}
