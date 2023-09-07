@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Providers from "./providers/index.jsx";
 import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const App = () => {
         {
           index: true,
           element: <SignIn />,
+        },
+        {
+          path: "dashboard",
+          element: <Dashboard />,
         },
       ],
     },
