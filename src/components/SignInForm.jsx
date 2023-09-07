@@ -58,7 +58,7 @@ const SignInForm = ({ setSUMOpen }) => {
             toast.error("User not found!");
           }
         } else {
-          navigate(fromURL || "dashboard");
+          navigate(fromURL || "/dashboard");
         }
       });
     },
@@ -67,7 +67,7 @@ const SignInForm = ({ setSUMOpen }) => {
   const handleSigninWithGoogle = () => {
     dispatch(signInWithGoogle()).then((response) => {
       if (response?.error) dispatch(setUserLoading(false));
-      else navigate(fromURL || "dashboard");
+      else navigate(fromURL || "/dashboard");
     });
   };
 

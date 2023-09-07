@@ -1,6 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Providers from "./providers/index.jsx";
+import LogOffRoute from "./routes/LogOffRoute.jsx";
+import PrivateRoute from "./routes/PrivateRoute.jsx";
 import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
@@ -13,11 +15,19 @@ const App = () => {
       children: [
         {
           index: true,
-          element: <SignIn />,
+          element: (
+            <LogOffRoute>
+              <SignIn />
+            </LogOffRoute>
+          ),
         },
         {
           path: "dashboard",
-          element: <Dashboard />,
+          element: (
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          ),
         },
       ],
     },
