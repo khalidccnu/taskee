@@ -74,7 +74,7 @@ const Teams = ({ isTeams, setTeams }) => {
           {myTeams.length ? (
             myTeams.map((team) => {
               return (
-                <ListItem disablePadding>
+                <ListItem key={team.id} disablePadding>
                   <ListItemButton
                     onClick={() => navigate(`/dashboard/teams/${team.id}`)}
                   >

@@ -8,6 +8,7 @@ import Error from "./Error.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Profile from "./pages/Profile.jsx";
+import Teams from "./pages/Teams.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const App = () => {
             {
               path: "profile",
               element: <Profile />,
+            },
+            {
+              path: "teams/:id",
+              element: <Teams />,
             },
           ],
         },
