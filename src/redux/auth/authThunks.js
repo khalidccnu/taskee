@@ -7,8 +7,20 @@ import {
   updateProfile,
   signOut,
 } from "firebase/auth";
-import { auth, googleProvider } from "../../utils/firebase.config.js";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db, googleProvider } from "../../utils/firebase.config.js";
 import { setFBUnHold, setUserLoading } from "./authSlice";
+
+const createUser = async (values) => {
+  const docRef = doc(db, "users", values.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) return "User exist!";
+  return setDoc(doc(db, "users", values.uid), {
+    ...values,
+    timeStamp: serverTimestamp(),
+  });
+};
 
 export const signInWithEP = createAsyncThunk(
   "auth/signInWithEP",
@@ -30,6 +42,10 @@ export const signInWithGoogle = createAsyncThunk(
     thunkAPI.dispatch(setUserLoading(true));
 
     const userCred = await signInWithPopup(auth, googleProvider);
+    await createUser({
+      uid: userCred.user.uid,
+      displayName: userCred.user.displayName,
+    });
 
     thunkAPI.dispatch(setFBUnHold(true));
     return userCred;
@@ -56,7 +72,12 @@ export const createUserWithEP = createAsyncThunk(
         updateProfile(auth.currentUser, {
           displayName: name,
           photoURL: response.data.filePath,
-        }),
+        }).then(() =>
+          createUser({
+            uid: userCred.user.uid,
+            displayName: userCred.user.displayName,
+          }),
+        ),
       );
 
     thunkAPI.dispatch(setFBUnHold(true));
