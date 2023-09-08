@@ -4,14 +4,19 @@ import Header from "./components/Header.jsx";
 
 const Root = () => {
   const [isHBMenu, setHbMenu] = useState(true);
+  const [isNIMOpen, setNIMOpen] = useState(false);
   const location = useLocation();
 
   return (
     <>
       {location.pathname !== "/" ? (
-        <Header isHBMenu={isHBMenu} setHbMenu={setHbMenu} />
+        <Header
+          isHBMenu={isHBMenu}
+          setHbMenu={setHbMenu}
+          setNIMOpen={setNIMOpen}
+        />
       ) : null}
-      <Outlet context={{ isHBMenu, setHbMenu }} />
+      <Outlet context={{ isHBMenu, setHbMenu, isNIMOpen, setNIMOpen }} />
     </>
   );
 };

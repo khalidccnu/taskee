@@ -6,7 +6,7 @@ import { AddCircle, Logout, Menu, MenuOpen } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { logOut } from "../redux/auth/authThunks.js";
 
-const Header = ({ isHBMenu, setHbMenu }) => {
+const Header = ({ isHBMenu, setHbMenu, setNIMOpen }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,6 +81,7 @@ const Header = ({ isHBMenu, setHbMenu }) => {
                     boxShadow: `none`,
                   },
                 }}
+                onClick={() => setNIMOpen(true)}
               >
                 New
               </Button>

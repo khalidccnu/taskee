@@ -20,6 +20,7 @@ import {
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { IKImage } from "imagekitio-react";
+import NewItemModal from "../components/NewItemModal.jsx";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -164,6 +165,7 @@ const Dashboard = () => {
           </Box>
         </Container>
       </Box>
+      <NewItemModal />
     </Box>
   );
 };
