@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { getTeams } from "../utils/localStorage.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getTeams, updateTasks } from "../utils/localStorage.js";
+import { getTeamTasks } from "../redux/tasks/tasksSlice.js";
+import TeamTaskCard from "../components/TeamTaskCard.jsx";
 import UsersInviteModal from "../components/UsersInviteModal.jsx";
 
 const Teams = () => {
@@ -10,12 +13,23 @@ const Teams = () => {
   const theme = useTheme();
   const [isUIMOpen, setUIMOpen] = useState(false);
   const [team, setTeam] = useState({});
+  const dispatch = useDispatch();
+  const { teamTasks } = useSelector((store) => store.tasksSlice);
+
+  const changeStatusTask = (id, status) => {
+    updateTasks(id, status);
+    dispatch(getTeamTasks(teamID));
+  };
 
   useEffect(() => {
     const getTeam = getTeams().find((team) => team.id === teamID);
 
     setTeam(getTeam);
   }, []);
+
+  useEffect(() => {
+    dispatch(getTeamTasks(teamID));
+  }, [teamID]);
 
   return (
     <Box>
@@ -40,6 +54,13 @@ const Teams = () => {
           Users
         </Button>
       </Box>
+      <Grid container spacing={2} mt={3}>
+        {teamTasks.map((task) => (
+          <Grid item key={task.id} xs={12} sm={6} lg={4}>
+            <TeamTaskCard task={task} changeStatusTask={changeStatusTask} />
+          </Grid>
+        ))}
+      </Grid>
       <UsersInviteModal
         teamID={teamID}
         teamName={team.name}

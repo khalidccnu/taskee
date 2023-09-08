@@ -4,6 +4,7 @@ import { Backdrop, Box, Button, Fade, Grid, Modal } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import NewTeam from "./NewTeam.jsx";
+import NewTask from "./NewTask.jsx";
 
 const NewItemModal = () => {
   const theme = useTheme();
@@ -44,7 +45,9 @@ const NewItemModal = () => {
           {isTeam || isTask ? (
             isTeam ? (
               <NewTeam setTeam={setTeam} />
-            ) : null
+            ) : (
+              <NewTask setTask={setTask} />
+            )
           ) : (
             <Grid container gap={1} justifyContent={`center`}>
               <Grid item>

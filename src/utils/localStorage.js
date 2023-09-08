@@ -58,3 +58,34 @@ export const acceptToTeams = (uid, teamID) => {
 
   localStorage.setItem("teams", JSON.stringify(teams));
 };
+
+export const getTasks = () => {
+  let tasks = [];
+  const getTasks = localStorage.getItem("tasks");
+
+  if (getTasks) tasks = JSON.parse(getTasks);
+
+  return tasks;
+};
+
+export const addToTasks = (task) => {
+  const taskConstruct = {
+    id: Math.random().toString(36).substring(2, 7),
+    ...task,
+    status: "pending",
+  };
+  const tasks = getTasks();
+
+  tasks.push(taskConstruct);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
+export const updateTasks = (id, status) => {
+  const tasks = getTasks();
+
+  const findIndex = tasks.findIndex((task) => task.id === id);
+  const constructTask = { ...tasks[findIndex], status };
+  tasks.splice(findIndex, 1, constructTask);
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+};

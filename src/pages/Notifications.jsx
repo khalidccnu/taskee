@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Check, Clear } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import {
   acceptToTeams,
   getInviteUsers,
   removeFromInviteUsers,
 } from "../utils/localStorage.js";
+import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
 
 const Notifications = () => {
   const theme = useTheme();
   const [notifications, setNotifications] = useState([]);
   const { user } = useSelector((store) => store.authSlice);
+  const dispatch = useDispatch();
   const [isReFetch, setReFetch] = useState(false);
 
   const acceptInvite = (id, uid, teamID) => {
@@ -21,6 +23,7 @@ const Notifications = () => {
     removeFromInviteUsers(id);
     toast.success("You have successfully connected!");
     setReFetch(!isReFetch);
+    dispatch(getMyTeams());
   };
 
   const declineInvite = (id) => {
