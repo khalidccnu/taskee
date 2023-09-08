@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import {
   Box,
@@ -21,11 +21,13 @@ import {
 import { useSelector } from "react-redux";
 import { IKImage } from "imagekitio-react";
 import NewItemModal from "../components/NewItemModal.jsx";
+import Teams from "../components/Teams.jsx";
 
 const Dashboard = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isHBMenu, setHbMenu } = useOutletContext();
+  const [isTeams, setTeams] = useState(false);
   const { user } = useSelector((store) => store.authSlice);
 
   const handleResize = (_) => {
@@ -148,7 +150,7 @@ const Dashboard = () => {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton onClick={() => setTeams(!isTeams)}>
                     <ListItemIcon sx={{ minWidth: 35, color: `#fff` }}>
                       <Diversity2 />
                     </ListItemIcon>
@@ -166,6 +168,7 @@ const Dashboard = () => {
         </Container>
       </Box>
       <NewItemModal />
+      <Teams isTeams={isTeams} setTeams={setTeams} />
     </Box>
   );
 };

@@ -3,10 +3,12 @@ import { useOutletContext } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { ControlPoint } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { addToTeams } from "../utils/localStorage.js";
+import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
 
 const validationSchema = yup.object({
   name: yup
@@ -16,6 +18,8 @@ const validationSchema = yup.object({
 });
 
 const NewTeam = ({ setTeam }) => {
+  const { user } = useSelector((store) => store.authSlice);
+  const dispatch = useDispatch();
   const theme = useTheme();
   const { setNIMOpen } = useOutletContext();
   const formik = useFormik({
@@ -24,7 +28,8 @@ const NewTeam = ({ setTeam }) => {
     },
     validationSchema,
     onSubmit: (values) => {
-      addToTeams(values);
+      addToTeams({ ...values, users: [user.uid] });
+      dispatch(getMyTeams(user.uid));
       setNIMOpen(false);
       setTeam(false);
       toast.success("New team created!");
