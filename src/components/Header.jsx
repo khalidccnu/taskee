@@ -18,7 +18,7 @@ const Header = ({ isHBMenu, setHbMenu, setNIMOpen }) => {
   };
 
   return (
-    <Box component={`header`} bgcolor={`#fff`} py={2}>
+    <Box component={`header`} bgcolor={`#fff`} py={2} zIndex={1}>
       <Box px={3}>
         <Grid
           container

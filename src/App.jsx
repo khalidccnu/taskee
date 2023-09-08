@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Providers from "./providers/index.jsx";
 import LogOffRoute from "./routes/LogOffRoute.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
+import PrivateTeamsRoute from "./routes/PrivateTeamsRoute.jsx";
 import Root from "./Root.jsx";
 import Error from "./Error.jsx";
 import SignIn from "./pages/SignIn.jsx";
@@ -45,7 +46,11 @@ const App = () => {
             },
             {
               path: "teams/:id",
-              element: <Teams />,
+              element: (
+                <PrivateTeamsRoute>
+                  <Teams />
+                </PrivateTeamsRoute>
+              ),
             },
             {
               path: "notifications",

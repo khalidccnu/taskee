@@ -39,14 +39,14 @@ const Profile = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      dispatch(
-        updateUser({
-          uid: user.uid,
-          username: values.username,
-          displayName: values.name,
-          bio: values.bio,
-        }),
-      ).then((response) => {
+      const constructUser = {
+        uid: user.uid,
+        username: values.username,
+        displayName: values.name,
+        bio: values.bio,
+      };
+
+      dispatch(updateUser({ user: constructUser })).then((response) => {
         if (response?.meta.requestStatus !== "fulfilled") {
           toast.error("Something went wrong!");
         } else {

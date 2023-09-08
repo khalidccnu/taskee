@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import {
   Button,
@@ -20,8 +20,9 @@ import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { addToTasks, getTeams } from "../utils/localStorage.js";
-import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
+import { getMyTeams } from "../redux/my-teams/myTeamsThunks.js";
 import { getSomeUsers } from "../redux/users/usersThunks.js";
+import { getMyTasks, getTeamTasks } from "../redux/tasks/tasksThunks.js";
 
 const validationSchema = yup.object({
   title: yup
@@ -57,7 +58,8 @@ const NewTask = ({ setTask }) => {
     validationSchema,
     onSubmit: (values) => {
       addToTasks(values);
-      dispatch(getMyTeams(user.uid));
+      dispatch(getMyTasks({ uid: user.uid }));
+      dispatch(getTeamTasks({ teamID: values.team }));
       setNIMOpen(false);
       setTask(false);
       toast.success("Task created!");
@@ -65,11 +67,11 @@ const NewTask = ({ setTask }) => {
   });
 
   useEffect(() => {
-    dispatch(getMyTeams(user.uid));
+    dispatch(getMyTeams({ uid: user.uid }));
   }, []);
 
   useEffect(() => {
-    dispatch(getMyTeams(user.uid));
+    dispatch(getMyTeams({ uid: user.uid }));
   }, []);
 
   useEffect(() => {

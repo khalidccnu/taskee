@@ -3,8 +3,8 @@ import { Box, Grid, Typography } from "@mui/material";
 import Lottie from "lottie-react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTasks } from "../utils/localStorage.js";
-import { getMyTasks } from "../redux/tasks/tasksSlice.js";
-import TeamTaskCard from "../components/TeamTaskCard.jsx";
+import { getMyTasks } from "../redux/tasks/tasksThunks.js";
+import TaskCard from "../components/TaskCard.jsx";
 
 const Overview = () => {
   const [anmTManagement, setTManagement] = useState(null);
@@ -14,12 +14,12 @@ const Overview = () => {
 
   const changeStatusTask = (id, status) => {
     updateTasks(id, status);
-    dispatch(getMyTasks(user.uid));
+    dispatch(getMyTasks({ uid: user.uid }));
   };
 
   useEffect(() => {
     if (user) {
-      dispatch(getMyTasks(user.uid));
+      dispatch(getMyTasks({ uid: user.uid }));
     }
   }, [user]);
 
@@ -30,11 +30,11 @@ const Overview = () => {
   }, []);
 
   return (
-    <Grid container spacing={2} mt={3}>
+    <Grid container spacing={2}>
       {myTasks.length ? (
         myTasks.map((task) => (
           <Grid item key={task.id} xs={12} sm={6} lg={4}>
-            <TeamTaskCard task={task} changeStatusTask={changeStatusTask} />
+            <TaskCard task={task} changeStatusTask={changeStatusTask} />
           </Grid>
         ))
       ) : (

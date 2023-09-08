@@ -31,7 +31,7 @@ const SignIn = () => {
               </Typography>
             </Box>
           </Grid>
-          <Grid id={`signin`} item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
             <SignInForm setSUMOpen={setSUMOpen} />
           </Grid>
         </Grid>

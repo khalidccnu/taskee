@@ -7,7 +7,7 @@ import {
   updateProfile,
   signOut,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider } from "../../utils/firebase.config.js";
 import { setFBUnHold, setUser, setUserLoading } from "./authSlice";
 
@@ -16,29 +16,34 @@ const createUser = async (values) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) return "User exist!";
-  return setDoc(doc(db, "users", values.uid), {
+
+  await setDoc(doc(db, "users", values.uid), {
     ...values,
     username: null,
     bio: null,
-    timeStamp: serverTimestamp(),
   });
+
+  return "User inserted!";
 };
 
-export const getUser = createAsyncThunk("auth/getUser", async (uid) => {
+export const getUser = createAsyncThunk("auth/getUser", async ({ uid }) => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) return docSnap.data();
+
   return {};
 });
 
 export const updateUser = createAsyncThunk(
   "auth/updateUser",
-  async (values, thunkAPI) => {
-    await setDoc(doc(db, "users", values.uid), values, { merge: true });
+  async ({ user }, thunkAPI) => {
+    await setDoc(doc(db, "users", user.uid), user, { merge: true });
 
     const { authSlice } = thunkAPI.getState();
-    thunkAPI.dispatch(setUser({ ...authSlice.user, ...values }));
+    thunkAPI.dispatch(setUser({ ...authSlice.user, ...user }));
+
+    return "User updated!";
   },
 );
 

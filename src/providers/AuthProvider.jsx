@@ -17,14 +17,16 @@ const AuthProvider = () => {
     if (isFBUnHold) {
       const authChange = onAuthStateChanged(auth, async (userCred) => {
         if (userCred) {
-          const { payload } = await dispatch(getUser(userCred.uid));
+          const { uid, displayName, email, photoURL } = userCred;
 
+          const { payload: userFromFS } = await dispatch(getUser({ uid }));
           dispatch(
             setUser({
-              ...userCred,
-              displayName: payload.displayName,
-              username: payload.username,
-              bio: payload.bio,
+              uid,
+              displayName,
+              email,
+              photoURL,
+              ...userFromFS,
             }),
           );
           sessionStorage.setItem("_vu", JSON.stringify(true));

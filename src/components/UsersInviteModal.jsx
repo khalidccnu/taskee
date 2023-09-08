@@ -9,10 +9,12 @@ import InviteUser from "./InviteUser.jsx";
 const UsersInviteModal = ({ teamID, teamName, isUIMOpen, setUIMOpen }) => {
   const { users } = useSelector((store) => store.usersSlice);
   const dispatch = useDispatch();
+  const [isReFetch, setReFetch] = useState(false);
 
   const inviteUser = (uid) => {
     addToInviteUsers({ uid, teamID, teamName });
     toast.success(`Invitation successful!`);
+    setReFetch(!isReFetch);
   };
 
   useEffect(() => {
@@ -48,9 +50,10 @@ const UsersInviteModal = ({ teamID, teamName, isUIMOpen, setUIMOpen }) => {
           <List>
             {users.map((user) => (
               <InviteUser
-                key={`user.uid`}
+                key={user.uid}
                 user={user}
                 inviteUser={inviteUser}
+                isReFetch={isReFetch}
               />
             ))}
           </List>

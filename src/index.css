@@ -2,8 +2,3 @@ body {
   background-color: #edf1d6;
   margin: 0;
 }
-
-/* === Sign In === */
-#signin .MuiInputBase-root::before {
-  border-bottom-color: #40513B;
-}

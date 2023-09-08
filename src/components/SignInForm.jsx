@@ -100,6 +100,13 @@ const SignInForm = ({ setSUMOpen }) => {
             onBlur={formik.handleBlur}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
+            sx={{
+              "& .MuiInputBase-root": {
+                "&::before": {
+                  borderBottomColor: theme.palette.rifleGreen.main,
+                },
+              },
+            }}
           />
         </Grid>
         <Grid item>
@@ -115,6 +122,13 @@ const SignInForm = ({ setSUMOpen }) => {
             onBlur={formik.handleBlur}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
+            sx={{
+              "& .MuiInputBase-root": {
+                "&::before": {
+                  borderBottomColor: theme.palette.rifleGreen.main,
+                },
+              },
+            }}
           />
         </Grid>
         <Grid item>

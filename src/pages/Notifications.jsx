@@ -9,7 +9,7 @@ import {
   getInviteUsers,
   removeFromInviteUsers,
 } from "../utils/localStorage.js";
-import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
+import { getMyTeams } from "../redux/my-teams/myTeamsThunks.js";
 
 const Notifications = () => {
   const theme = useTheme();
@@ -23,7 +23,7 @@ const Notifications = () => {
     removeFromInviteUsers(id);
     toast.success("You have successfully connected!");
     setReFetch(!isReFetch);
-    dispatch(getMyTeams());
+    dispatch(getMyTeams({ uid: user.uid }));
   };
 
   const declineInvite = (id) => {

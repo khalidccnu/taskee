@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
 import { Backdrop, Box, Button, Fade, Grid, Modal } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
 import NewTeam from "./NewTeam.jsx";
 import NewTask from "./NewTask.jsx";
 
-const NewItemModal = () => {
+const NewItemModal = ({ isNIMOpen, setNIMOpen }) => {
   const theme = useTheme();
-  const { isNIMOpen, setNIMOpen } = useOutletContext();
   const [isTeam, setTeam] = useState(false);
   const [isTask, setTask] = useState(false);
 

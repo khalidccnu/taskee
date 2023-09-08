@@ -3,7 +3,7 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.config.js";
 
 export const getSomeUsers = createAsyncThunk(
-  "auth/getSomeUsers",
+  "users/getSomeUsers",
   async ({ userIds }) => {
     const users = [];
 
@@ -11,29 +11,30 @@ export const getSomeUsers = createAsyncThunk(
       const docRef = doc(db, "users", userId);
       const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const user = {
-          uid: docSnap.data().uid,
-          displayName: docSnap.data().displayName,
-        };
-        users.push(user);
-      }
+      const user = {
+        uid: docSnap.data().uid,
+        displayName: docSnap.data().displayName,
+      };
+
+      users.push(user);
     }
 
     return users;
   },
 );
 
-export const getUsers = createAsyncThunk("auth/getUsers", async () => {
+export const getUsers = createAsyncThunk("users/getUsers", async () => {
+  const users = [];
+
   const collectionRef = collection(db, "users");
   const docSnap = await getDocs(collectionRef);
-  const users = [];
 
   docSnap.forEach((doc) => {
     const user = {
       uid: doc.data().uid,
       displayName: doc.data().displayName,
     };
+
     users.push(user);
   });
 

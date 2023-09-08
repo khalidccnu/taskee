@@ -13,7 +13,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { Groups, MenuOpen } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
+import { getMyTeams } from "../redux/my-teams/myTeamsThunks.js";
 
 const Teams = ({ isTeams, setTeams }) => {
   const theme = useTheme();
@@ -23,7 +23,7 @@ const Teams = ({ isTeams, setTeams }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) dispatch(getMyTeams(user.uid));
+    if (user) dispatch(getMyTeams({ uid: user.uid }));
   }, [user]);
 
   return (
@@ -39,6 +39,7 @@ const Teams = ({ isTeams, setTeams }) => {
       sx={{
         transition: `right 0.5s ease-in-out`,
       }}
+      zIndex={15}
     >
       <Box textAlign={`end`}>
         <Button

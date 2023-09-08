@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { addToTeams } from "../utils/localStorage.js";
-import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
+import { getMyTeams } from "../redux/my-teams/myTeamsThunks.js";
 
 const validationSchema = yup.object({
   name: yup
@@ -29,7 +29,7 @@ const NewTeam = ({ setTeam }) => {
     validationSchema,
     onSubmit: (values) => {
       addToTeams({ ...values, users: [user.uid] });
-      dispatch(getMyTeams(user.uid));
+      dispatch(getMyTeams({ uid: user.uid }));
       setNIMOpen(false);
       setTeam(false);
       toast.success("New team created!");

@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -18,8 +17,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { getTeams, updateTasks } from "../utils/localStorage.js";
-import { getTeamTasks } from "../redux/tasks/tasksSlice.js";
-import TeamTaskCard from "../components/TeamTaskCard.jsx";
+import { getTeamTasks } from "../redux/tasks/tasksThunks.js";
+import TaskCard from "../components/TaskCard.jsx";
 import UsersInviteModal from "../components/UsersInviteModal.jsx";
 
 const Teams = () => {
@@ -41,7 +40,7 @@ const Teams = () => {
 
   const changeStatusTask = (id, status) => {
     updateTasks(id, status);
-    dispatch(getTeamTasks(teamID));
+    dispatch(getTeamTasks({ teamID }));
   };
 
   useEffect(() => {
@@ -51,32 +50,26 @@ const Teams = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getTeamTasks(teamID));
+    dispatch(getTeamTasks({ teamID }));
   }, [teamID]);
 
   useEffect(() => {
-    if (teamTasks && formik.values.filter) {
-      const data = teamTasks.filter(
-        (task) => task.status === formik.values.filter,
-      );
-      setTasks(data);
-    } else {
-      setTasks(teamTasks);
-    }
-  }, [formik.values.filter, teamTasks]);
+    let arr;
 
-  useEffect(() => {
-    if (teamTasks && formik.values.dateFilter) {
-      const data = teamTasks.filter(
+    if (teamTasks && formik.values.filter) {
+      arr = teamTasks.filter((task) => task.status === formik.values.filter);
+    } else if (teamTasks && formik.values.dateFilter) {
+      arr = teamTasks.filter(
         (task) =>
           JSON.stringify(task.dueDate) ===
           JSON.stringify(formik.values.dateFilter),
       );
-      setTasks(data);
     } else {
-      setTasks(teamTasks);
+      arr = teamTasks;
     }
-  }, [formik.values.dateFilter, teamTasks]);
+
+    setTasks(arr);
+  }, [formik.values.filter, formik.values.dateFilter, teamTasks]);
 
   useEffect(() => {
     if (tasks && formik.values.sort) {
@@ -207,7 +200,7 @@ const Teams = () => {
         <Grid container spacing={2} mt={3}>
           {tasks.map((task) => (
             <Grid item key={task.id} xs={12} sm={6} lg={4}>
-              <TeamTaskCard task={task} changeStatusTask={changeStatusTask} />
+              <TaskCard task={task} changeStatusTask={changeStatusTask} />
             </Grid>
           ))}
         </Grid>

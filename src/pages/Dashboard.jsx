@@ -22,16 +22,19 @@ import {
 import { useSelector } from "react-redux";
 import { IKImage } from "imagekitio-react";
 import NewItemModal from "../components/NewItemModal.jsx";
+import TaskViewModal from "../components/TaskViewModal.jsx";
 import Teams from "../components/Teams.jsx";
 
 const Dashboard = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { isHBMenu, setHbMenu } = useOutletContext();
+  const { isHBMenu, setHbMenu, isNIMOpen, setNIMOpen } = useOutletContext();
+  const [isTVMOpen, setTVMOpen] = useState(false);
   const [isTeams, setTeams] = useState(false);
   const { user } = useSelector((store) => store.authSlice);
+  const [viewTask, setViewTask] = useState(null);
 
-  const handleResize = (_) => {
+  const handleResize = () => {
     if (innerWidth >= 900) setHbMenu(false);
     else setHbMenu(true);
   };
@@ -48,7 +51,10 @@ const Dashboard = () => {
     <Box component={`section`}>
       <Box
         display={`grid`}
-        gridTemplateColumns={{ xs: `repeat(1, 1fr)`, md: `18rem auto` }}
+        gridTemplateColumns={{
+          xs: `repeat(1, 100%)`,
+          md: `18rem calc(100% - 18rem)`,
+        }}
       >
         <Box
           alignSelf={{ md: `start` }}
@@ -63,9 +69,11 @@ const Dashboard = () => {
           sx={{
             transition: `left 0.5s ease-in-out`,
           }}
+          zIndex={10}
         >
           <Box
             height={{ xs: `100%`, md: `calc(100vh - ${theme.spacing(10)})` }}
+            sx={{ overflowY: `auto` }}
           >
             <Box textAlign={`end`} display={{ sm: `none` }}>
               <Button
@@ -174,11 +182,16 @@ const Dashboard = () => {
         </Box>
         <Container>
           <Box py={5}>
-            <Outlet />
+            <Outlet context={{ setTVMOpen, setViewTask }} />
           </Box>
         </Container>
       </Box>
-      <NewItemModal />
+      <NewItemModal isNIMOpen={isNIMOpen} setNIMOpen={setNIMOpen} />
+      <TaskViewModal
+        isTVMOpen={isTVMOpen}
+        setTVMOpen={setTVMOpen}
+        viewTask={viewTask}
+      />
       <Teams isTeams={isTeams} setTeams={setTeams} />
     </Box>
   );
