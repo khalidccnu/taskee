@@ -7,6 +7,7 @@ import {
   setUser,
   setUserLoading,
 } from "../redux/auth/authSlice.js";
+import { getUser } from "../redux/auth/authThunks.js";
 
 const AuthProvider = () => {
   const { isFBUnHold } = useSelector((store) => store.authSlice);
@@ -14,9 +15,18 @@ const AuthProvider = () => {
 
   useEffect(() => {
     if (isFBUnHold) {
-      const authChange = onAuthStateChanged(auth, (userCred) => {
+      const authChange = onAuthStateChanged(auth, async (userCred) => {
         if (userCred) {
-          dispatch(setUser(userCred));
+          const { payload } = await dispatch(getUser(userCred.uid));
+
+          dispatch(
+            setUser({
+              ...userCred,
+              displayName: payload.displayName,
+              username: payload.username,
+              bio: payload.bio,
+            }),
+          );
           sessionStorage.setItem("_vu", JSON.stringify(true));
         } else {
           dispatch(setFBUnHold(false));

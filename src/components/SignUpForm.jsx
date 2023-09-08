@@ -86,7 +86,7 @@ const SignUpForm = ({ isSUMOpen, setSUMOpen }) => {
           toast.success(
             "Your account has been created successfully! You are being redirected, please wait...",
           );
-          setTimeout(() => navigate("/dashboard"), 3000);
+          setTimeout(() => navigate("/dashboard/profile"), 3000);
         }
       });
     },

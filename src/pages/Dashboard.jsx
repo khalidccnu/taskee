@@ -1,13 +1,29 @@
 import React, { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Container,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { MenuOpen } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Diversity2,
+  MenuOpen,
+  SpaceDashboard,
+} from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { IKImage } from "imagekitio-react";
 
 const Dashboard = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { isHBMenu, setHbMenu } = useOutletContext();
   const { user } = useSelector((store) => store.authSlice);
 
@@ -103,11 +119,49 @@ const Dashboard = () => {
                   {user?.displayName || "Anonymous"}
                 </Typography>
               </Box>
+              <List
+                sx={{
+                  color: `#fff`,
+                  backgroundColor: `#72775C`,
+                  mt: 3,
+                  px: 3,
+                  borderRadius: 1,
+                }}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton onClick={() => navigate(`/dashboard`)}>
+                    <ListItemIcon sx={{ minWidth: 35, color: `#fff` }}>
+                      <SpaceDashboard />
+                    </ListItemIcon>
+                    <ListItemText primary="Dashboard" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(`/dashboard/profile`)}
+                  >
+                    <ListItemIcon sx={{ minWidth: 35, color: `#fff` }}>
+                      <AccountCircle />
+                    </ListItemIcon>
+                    <ListItemText primary="Profile" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon sx={{ minWidth: 35, color: `#fff` }}>
+                      <Diversity2 />
+                    </ListItemIcon>
+                    <ListItemText primary="Teams" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
             </Box>
           </Box>
         </Box>
         <Container>
-          <Box></Box>
+          <Box py={5}>
+            <Outlet />
+          </Box>
         </Container>
       </Box>
     </Box>

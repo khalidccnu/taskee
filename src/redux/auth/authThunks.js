@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, googleProvider } from "../../utils/firebase.config.js";
-import { setFBUnHold, setUserLoading } from "./authSlice";
+import { setFBUnHold, setUser, setUserLoading } from "./authSlice";
 
 const createUser = async (values) => {
   const docRef = doc(db, "users", values.uid);
@@ -18,9 +18,29 @@ const createUser = async (values) => {
   if (docSnap.exists()) return "User exist!";
   return setDoc(doc(db, "users", values.uid), {
     ...values,
+    username: null,
+    bio: null,
     timeStamp: serverTimestamp(),
   });
 };
+
+export const getUser = createAsyncThunk("auth/getUser", async (uid) => {
+  const docRef = doc(db, "users", uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) return docSnap.data();
+  return {};
+});
+
+export const updateUser = createAsyncThunk(
+  "auth/updateUser",
+  async (values, thunkAPI) => {
+    await setDoc(doc(db, "users", values.uid), values, { merge: true });
+
+    const { authSlice } = thunkAPI.getState();
+    thunkAPI.dispatch(setUser({ ...authSlice.user, ...values }));
+  },
+);
 
 export const signInWithEP = createAsyncThunk(
   "auth/signInWithEP",

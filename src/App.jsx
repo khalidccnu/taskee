@@ -7,6 +7,7 @@ import Root from "./Root.jsx";
 import Error from "./Error.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Profile from "./pages/Profile.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -30,6 +31,12 @@ const App = () => {
               <Dashboard />
             </PrivateRoute>
           ),
+          children: [
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+          ],
         },
       ],
     },
