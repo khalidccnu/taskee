@@ -22,7 +22,6 @@ import * as yup from "yup";
 import { addToTasks, getTeams } from "../utils/localStorage.js";
 import { getMyTeams } from "../redux/my-teams/myTeamsSlice.js";
 import { getSomeUsers } from "../redux/users/usersThunks.js";
-import { getMyTasks } from "../redux/tasks/tasksSlice.js";
 
 const validationSchema = yup.object({
   title: yup
@@ -206,9 +205,9 @@ const NewTask = ({ setTask }) => {
             error={formik.touched.level && Boolean(formik.errors.level)}
           >
             <MenuItem value="">None</MenuItem>
-            <MenuItem value={`low`}>Low</MenuItem>
-            <MenuItem value={`medium`}>Medium</MenuItem>
-            <MenuItem value={`high`}>High</MenuItem>
+            <MenuItem value={1}>Low</MenuItem>
+            <MenuItem value={2}>Medium</MenuItem>
+            <MenuItem value={3}>High</MenuItem>
           </Select>
           {formik.touched.level && formik.errors.level && (
             <FormHelperText error sx={{ ml: 0 }}>
