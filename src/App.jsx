@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import Teams from "./pages/Teams.jsx";
+import Notifications from "./pages/Notifications.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const App = () => {
             {
               path: "teams/:id",
               element: <Teams />,
+            },
+            {
+              path: "notifications",
+              element: <Notifications />,
             },
           ],
         },

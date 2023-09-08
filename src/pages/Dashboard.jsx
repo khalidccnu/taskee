@@ -16,6 +16,7 @@ import {
   AccountCircle,
   Diversity2,
   MenuOpen,
+  Notifications,
   SpaceDashboard,
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -155,6 +156,16 @@ const Dashboard = () => {
                       <Diversity2 />
                     </ListItemIcon>
                     <ListItemText primary="Teams" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(`/dashboard/notifications`)}
+                  >
+                    <ListItemIcon sx={{ minWidth: 35, color: `#fff` }}>
+                      <Notifications />
+                    </ListItemIcon>
+                    <ListItemText primary="Notifications" />
                   </ListItemButton>
                 </ListItem>
               </List>

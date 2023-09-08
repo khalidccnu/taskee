@@ -2,7 +2,7 @@ import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 
-const InviteUser = ({ user }) => {
+const InviteUser = ({ user, inviteUser }) => {
   return (
     <ListItem disablePadding>
       <ListItemText primary={user.displayName} />

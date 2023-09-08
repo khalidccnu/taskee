@@ -37,3 +37,24 @@ export const addToInviteUsers = (data) => {
   inviteUsers.push(dataConstruct);
   localStorage.setItem("inviteUsers", JSON.stringify(inviteUsers));
 };
+
+export const removeFromInviteUsers = (id) => {
+  const inviteUsers = getInviteUsers();
+
+  const findIndex = inviteUsers.findIndex((invite) => invite.id === id);
+  inviteUsers.splice(findIndex, 1);
+
+  localStorage.setItem("inviteUsers", JSON.stringify(inviteUsers));
+};
+
+export const acceptToTeams = (uid, teamID) => {
+  const teams = getTeams();
+
+  const team = teams.find((team) => team.id === teamID);
+  team.users.push(uid);
+
+  const findIndex = teams.findIndex((team) => team.id === teamID);
+  teams.splice(findIndex, 1, team);
+
+  localStorage.setItem("teams", JSON.stringify(teams));
+};

@@ -6,12 +6,12 @@ import { addToInviteUsers } from "../utils/localStorage.js";
 import { getUsers } from "../redux/users/usersThunks.js";
 import InviteUser from "./InviteUser.jsx";
 
-const UsersInviteModal = ({ teamID, isUIMOpen, setUIMOpen }) => {
+const UsersInviteModal = ({ teamID, teamName, isUIMOpen, setUIMOpen }) => {
   const { users } = useSelector((store) => store.usersSlice);
   const dispatch = useDispatch();
 
   const inviteUser = (uid) => {
-    addToInviteUsers({ uid, teamID });
+    addToInviteUsers({ uid, teamID, teamName });
     toast.success(`Invitation successful!`);
   };
 
