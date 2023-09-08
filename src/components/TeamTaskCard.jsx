@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Article, Person } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
@@ -50,24 +50,26 @@ const TeamTaskCard = ({ task, changeStatusTask }) => {
       <Box p={2}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <Button
-              type={`button`}
-              color={`rifleGreen`}
-              variant={`outlined`}
-              size={`small`}
-              sx={{
-                color: theme.palette.rifleGreen.main,
-                boxShadow: `none`,
-                "&:hover": {
-                  color: `#fff`,
-                  backgroundColor: theme.palette.rifleGreen.main,
+            <Tooltip title={`Mark as ${status}`}>
+              <Button
+                type={`button`}
+                color={`rifleGreen`}
+                variant={`outlined`}
+                size={`small`}
+                sx={{
+                  color: theme.palette.rifleGreen.main,
                   boxShadow: `none`,
-                },
-              }}
-              onClick={() => changeStatusTask(task.id, status)}
-            >
-              <Article />
-            </Button>
+                  "&:hover": {
+                    color: `#fff`,
+                    backgroundColor: theme.palette.rifleGreen.main,
+                    boxShadow: `none`,
+                  },
+                }}
+                onClick={() => changeStatusTask(task.id, status)}
+              >
+                <Article />
+              </Button>
+            </Tooltip>
           </Grid>
           <Grid container item alignItems={`center`} xs={6}>
             <Grid item>

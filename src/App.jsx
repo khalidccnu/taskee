@@ -7,6 +7,7 @@ import Root from "./Root.jsx";
 import Error from "./Error.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Overview from "./pages/Overview.jsx";
 import Profile from "./pages/Profile.jsx";
 import Teams from "./pages/Teams.jsx";
 import Notifications from "./pages/Notifications.jsx";
@@ -34,6 +35,10 @@ const App = () => {
             </PrivateRoute>
           ),
           children: [
+            {
+              index: true,
+              element: <Overview />,
+            },
             {
               path: "profile",
               element: <Profile />,
