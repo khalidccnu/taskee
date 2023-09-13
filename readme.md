@@ -8,9 +8,7 @@
 
 #### Feature:
 
-- Users update their profile easily.
-- Users own dashboard implemented where only available own tasks.
-- Users can create teams as much as they need.
+- Users update their profile easily and their own dashboard implemented where only available own tasks.
 - Users can filter & sort their tasks easily.
 - Teams have invitation system.
 
